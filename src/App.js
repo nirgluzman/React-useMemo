@@ -1,17 +1,25 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 function App() {
   const [number, setNumber] = useState(0);
   const [dark, setDark] = useState(false);
 
+  // optimizing the performance by eliminating repeating heavy computations
   const doubleNumber = useMemo(() => {
     return slowFunction(number);
   }, [number]);
 
-  const themeStyles = {
-    backgroundColor: dark ? "black" : "white",
-    color: dark ? "white" : "black",
-  };
+  // useMemo to check referential equality
+  const themeStyles = useMemo(() => {
+    return {
+      backgroundColor: dark ? "black" : "white",
+      color: dark ? "white" : "black",
+    };
+  }, [dark]);
+
+  useEffect(() => {
+    console.log("Theme changed !");
+  }, [themeStyles]);
 
   return (
     <>
